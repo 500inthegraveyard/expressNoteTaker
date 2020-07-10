@@ -2,6 +2,11 @@
 var express = require("express");
 var path = require("path");
 const { domainToASCII } = require("url");
+var dbjson = require("./db/db.json");
+const { fstat } = require("fs");
+console.log("org dbjson", dbjson);
+var fs = require('fs');
+
 
 
 var app = express();
@@ -10,15 +15,10 @@ var PORT = 3000;
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.static('public'));
 
 
-var data = [
-    {
-        Name: "Note",
-        noteText: "This is my note.",
-        uniqueId: "1234",
-    }, 
-];
+
 
 
 app.get("/", function(req, res) {
@@ -31,14 +31,21 @@ app.get("/notes", function(req, res) {
 
 
 app.get("/api/notes", function(req, res) {
-    res.json(data);
+    res.json(dbjson);
 });
 
 
 app.post("/api/notes", function(req, res) {
     
     var newNote = req.body;
-    console.log(newNote)
+    dbjson.push(newNote);
+    fs.writeFile("./db/db.json",JSON.stringify(dbjson), function(err){
+        if (err) throw err;
+        console.log('Saved!');
+    
+    })
+    
+    console.log("new dbjson", dbjson);
 
 
   });
