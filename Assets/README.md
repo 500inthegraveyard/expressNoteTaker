@@ -4,7 +4,7 @@
 
 
 ## Application Purpose
-This
+This is a note taker application that is used to keep track of notes. A user can create, delete, and add notes.
 
 ## Start Application
 
